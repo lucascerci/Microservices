@@ -1,30 +1,50 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
+	"context"
 	"log"
+	"microservices/handlers"
 	"net/http"
+	"os"
+	"os/signal"
+	"time"
 )
 
 func main() {
-	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
-		log.Println("Hello World")
-		d, err := ioutil.ReadAll(r.Body)
+	l := log.New(os.Stdout, "product-api", log.LstdFlags)
+	hh := handlers.NewHello(l)
+	gb := handlers.NewGoodbye(l)
+
+	// create a new serve mux and register the handlers
+	sm := http.NewServeMux()
+	sm.Handle("/", hh)
+	sm.Handle("/goodbye", gb)
+
+	s := &http.Server{
+		Addr:         ":3000", // configure the bind address
+		Handler:      sm,      // set the default handler
+		IdleTimeout:  120 * time.Second,
+		ReadTimeout:  1 * time.Second, // max time to read request from the client
+		WriteTimeout: 1 * time.Second, // max time to write response to the client
+	}
+
+	go func() {
+		err := s.ListenAndServe()
 		if err != nil {
-			//write header allows to specify the http status code that is send back to the caller
-			//rw.WriteHeader(http.StatusBadRequest)
-			//writing a error message to the user
-			//rw.Write([]byte("Ooops"))
-			http.Error(rw, "Ooops", http.StatusBadRequest)
-			return
+			l.Fatal(err)
 		}
-		fmt.Fprintf(rw, "Hello %s\n", d)
-	})
+	}()
 
-	http.HandleFunc("/goodbye", func(http.ResponseWriter, *http.Request) {
-		log.Println("Goodbye World")
-	})
+	// trap sigterm or interupt and gracefully shutdown the server
+	sigChan := make(chan os.Signal)
+	signal.Notify(sigChan, os.Interrupt)
+	signal.Notify(sigChan, os.Kill)
 
-	http.ListenAndServe(":3000", nil)
+	// Block until a signal is received.
+	sig := <-sigChan
+	l.Println("Received terminate, graceful shutdown", sig)
+
+	//Shutdown it will wait ultil the requests that are actually being handle by the server finish, then shutdown
+	tc, _ := context.WithTimeout(context.Background(), 30*time.Second)
+	s.Shutdown(tc)
 }
