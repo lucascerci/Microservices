@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"microservices/data"
+	"coffe-api/data"
 )
 
 // MiddlewareValidateProduct validates the product in the request and calls next if ok

@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"microservices/data"
+	"coffe-api/data"
 )
 
 // swagger:route DELETE /products/{id} products deleteProduct

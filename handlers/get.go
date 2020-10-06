@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"microservices/data"
+	"coffe-api/data"
 )
 
 // swagger:route GET /products products listProducts
@@ -15,6 +15,7 @@ import (
 func (p *Products) ListAll(rw http.ResponseWriter, r *http.Request) {
 	p.l.Println("[DEBUG] get all records")
 
+	rw.Header().Add("Content-Type", "application/json")
 	prods := data.GetProducts()
 
 	err := data.ToJSON(prods, rw)

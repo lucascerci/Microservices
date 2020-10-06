@@ -13,5 +13,5 @@ The applicaiton can be run with `go run`
 
 ```
 ➜ go run main.go
-coffe-api 2020/10/06 17:00:06 Starting server on port 9090
+coffe-api 2020/10/06 17:00:06 Starting server on port 3000
 ```

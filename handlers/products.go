@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"microservices/data"
+	"coffe-api/data"
 )
 
 // KeyProduct is a key used for the Product object in the context

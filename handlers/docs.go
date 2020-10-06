@@ -15,7 +15,7 @@
 // swagger:meta
 package handlers
 
-import "microservices/data"
+import "coffe-api/data"
 
 //
 // NOTE: Types defined here are purely for documentation purposes
@@ -67,7 +67,7 @@ type productParamsWrapper struct {
 	Body data.Product
 }
 
-// swagger:parameters updateProduct
+// swagger:parameters listSingle deleteProduct
 type productIDParamsWrapper struct {
 	// The id of the product for which the operation relates
 	// in: path

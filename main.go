@@ -1,15 +1,16 @@
 package main
 
 import (
+	"coffe-api/data"
+	"coffe-api/handlers"
 	"context"
 	"log"
-	"microservices/handlers"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
+
 	"github.com/go-openapi/runtime/middleware"
-	"microservices/data"
 	"github.com/gorilla/mux"
 )
 
@@ -49,7 +50,7 @@ func main() {
 
 	// create a new server
 	s := http.Server{
-		Addr:         ":3000",      // configure the bind address
+		Addr:         ":3000",           // configure the bind address
 		Handler:      sm,                // set the default handler
 		ErrorLog:     l,                 // set the logger for the server
 		ReadTimeout:  5 * time.Second,   // max time to read request from the client
@@ -59,7 +60,7 @@ func main() {
 
 	// start the server
 	go func() {
-		l.Println("Starting server on port 9090")
+		l.Println("Starting server on port 3000")
 
 		err := s.ListenAndServe()
 		if err != nil {
