@@ -29,6 +29,7 @@ func main() {
 	postRouter := sm.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/", ph.AddProduct)
 	postRouter.Use(ph.MiddlewareValidateProduct)
+
 	//sm.Handle("/products", ph)
 
 	s := &http.Server{
