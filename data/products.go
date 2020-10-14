@@ -119,15 +119,15 @@ func (p *ProductsDB) UpdateProduct(pr Product) error {
 }
 
 // AddProduct adds a new product to the database
-func AddProduct(p Product) {
+func (p *ProductsDB) AddProduct(pr Product) {
 	// get the next id in sequence
 	maxID := productList[len(productList)-1].ID
-	p.ID = maxID + 1
-	productList = append(productList, &p)
+	pr.ID = maxID + 1
+	productList = append(productList, &pr)
 }
 
 // DeleteProduct deletes a product from the database
-func DeleteProduct(id int) error {
+func (p *ProductsDB) DeleteProduct(id int) error {
 	i := findIndexByProductID(id)
 	if i == -1 {
 		return ErrProductNotFound
